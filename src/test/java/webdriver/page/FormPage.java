@@ -173,4 +173,12 @@ public class FormPage {
         Assertions.assertTrue(firstText, "Nie znaleziono tekstu 'Rejestracja przyjęta'");
         Assertions.assertTrue(secondText, "Nie znaleziono tekstu 'Rejestracja przyjęta. Dziękujemy!'");
     }
+
+    public int extractNumberFromElement() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[2]/div/div[3]/div/div/div[2]/div/form/div[1]/div/div/div/div/div/div/div/div/article/div/div[3]/div/div[4]/div[2]/div/div/div/div/div/div/div[5]/div")));
+        String text = element.getText();
+        String numberText = text.replaceAll("[^0-9-]", "");
+        return Integer.parseInt(numberText);
+    }
 }
