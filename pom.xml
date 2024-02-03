@@ -16,7 +16,6 @@
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-java</artifactId>
       <version>4.15.0</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -46,7 +45,6 @@
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-http-jdk-client</artifactId>
       <version>4.13.0</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.github.bonigarcia</groupId>
@@ -64,6 +62,46 @@
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-remote-driver</artifactId>
       <version>4.13.0</version>
+    </dependency>
+      <dependency>
+          <groupId>com.vaadin.external.google</groupId>
+          <artifactId>android-json</artifactId>
+          <version>0.0.20131108.vaadin1</version>
+          <scope>test</scope>
+      </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpcore</artifactId>
+      <version>4.4.16</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.5.14</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-devtools-v118</artifactId>
+      <version>4.16.0</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>6.8.7</version>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-devtools-v120</artifactId>
+      <version>4.16.0</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

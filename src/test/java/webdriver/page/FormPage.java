@@ -1,7 +1,6 @@
 package webdriver.page;
 
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -9,11 +8,14 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Random;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FormPage {
@@ -41,8 +43,9 @@ public class FormPage {
     @FindBy(css = "[test-id='btn-cash']")
     private WebElement cashButton;
 
-    @FindBy(css = "button[type='button']")
-    private WebElement endButton;
+    @FindBy(xpath = "/html/body/div/div[2]/div/div[3]/div/div/div/div[3]/div/button[contains(text(), 'Zakończ')]")
+    private WebElement endBtn;
+
 
     @FindBy(css = "div.form-check input[type='radio']")
     private List<WebElement> radioButtons;
@@ -78,7 +81,7 @@ public class FormPage {
         driver.findElement(By.cssSelector("[test-id='" + fieldId + "']")).sendKeys(value);
     }
 
-    public void selectProductField1(String fieldId) {
+    public void selectProductField(String fieldId) {
         WebElement element = driver.findElement(By.cssSelector("label[for='" + fieldId + "']"));
         JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
         jsExecutor.executeScript("arguments[0].click();", element);
@@ -89,15 +92,19 @@ public class FormPage {
         jsExecutor.executeScript("arguments[0].click();", registrationButton);
     }
 
-    public void clickTransferBtn() {
+    public void clickTransfer() {
         transferButton.click();
     }
 
-    public void clickCashBtn() {
-        cashButton.click();
+    public void selectingCash() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement cashOption = wait.until(ExpectedConditions.elementToBeClickable(cashButton));
+        cashOption.click();
     }
 
-    public void clickEndBtn() {
+    public void clickEndButton() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement endButton = wait.until(ExpectedConditions.elementToBeClickable(endBtn));
         endButton.click();
     }
 
@@ -108,10 +115,10 @@ public class FormPage {
         fillLastName("Doe");
         fillBasicField("basic_field_ee0b49fb", "10");
         fillBasicField("basic_field_855dd2b7", "Lorem ipsum");
-        selectRadioBtn();
+        selectRandomRadioButton();
     }
 
-    private void selectRadioBtn() {
+    private void selectRandomRadioButton() {
         int randomIndex = new Random().nextInt(radioButtons.size());
         radioButtons.get(randomIndex).click();
     }
@@ -128,8 +135,42 @@ public class FormPage {
     public void acceptCookies() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("modal-content")));
-        // Kliknij w przycisk "Akceptuj wszystkie"
+        // Click on the "Accept All" button
         WebElement acceptButton = element.findElement(By.cssSelector("button[test-id='ok']"));
         acceptButton.click();
+    }
+
+    public void checkingSuccess() {
+        //sprawdzenia czy strona to /gotowka poczekanie na strone
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.urlToBe("https://testy-zadanie.zapisani.dev/zakonczono/gotowka"));
+        String currentUrl = driver.getCurrentUrl();
+        String expectedUrl = "https://testy-zadanie.zapisani.dev/zakonczono/gotowka";
+        assertEquals(expectedUrl, currentUrl);
+        //sprawdzenie sukcesu
+        List<WebElement> elementy = driver.findElements(By.cssSelector(".text-center.col"));
+
+        // Sprawdzenie, czy oba teksty zostały znalezione
+        boolean firstText = false;
+        boolean secondText = false;
+
+        for (WebElement element : elementy) {
+            String tekst = element.getText();
+            if (tekst.contains("Rejestracja przyjęta")) {
+                firstText = true;
+                break;
+            }
+        }
+
+        for (WebElement element : elementy) {
+            String tekst = element.getText();
+            if (tekst.contains("Rejestracja przyjęta. Dziękujemy!")) {
+                secondText = true;
+                break;
+            }
+        }
+        // Sprawdzenie, czy oba teksty zostały znalezione
+        Assertions.assertTrue(firstText, "Nie znaleziono tekstu 'Rejestracja przyjęta'");
+        Assertions.assertTrue(secondText, "Nie znaleziono tekstu 'Rejestracja przyjęta. Dziękujemy!'");
     }
 }
