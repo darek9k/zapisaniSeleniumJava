@@ -7,11 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import webdriver.page.FormPage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class FormTest {
     private static WebDriver driver;
     private static FormPage formPage;

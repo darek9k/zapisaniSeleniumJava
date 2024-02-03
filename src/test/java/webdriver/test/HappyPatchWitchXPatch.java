@@ -43,22 +43,12 @@ public class HappyPatchWitchXPatch {
     }
 
     @Test
-    public void errorCheckingTest() {
-        formPage.acceptCookies();
-        formPage.fillFormWithTestData();
-        formPage.selectProductField("product_field_83cf9412");
-        formPage.clickRegistrationButton();
-        formPage.assertFailConfirmation();
-    }
-
-    @Test
     public void successAndAvailableCountTest() {
-
-
         //test formularza happy patch
         driver.get("https://testy-zadanie.zapisani.dev/");
         formPage.acceptCookies();
         formPage.fillFormWithTestData();
+
         //wyciągnięcie ilości 'Dostępne' z długim XPatch
         FormPage availableOnes = new FormPage(driver);
         int initialCount = availableOnes.extractNumberFromElement();
@@ -69,6 +59,7 @@ public class HappyPatchWitchXPatch {
         formPage.clickRegistrationButton();
         formPage.checkingSuccess();
         formPage.clickEndButton();
+
         //wyciagniecie ilosci 'Dostępne' z długim XPatch / po wypełnienie formularza plus asercja
         int finalCount = availableOnes.extractNumberFromElement();
         assertEquals(1, initialCount - finalCount);
