@@ -141,42 +141,31 @@ public class FormPage {
     }
 
     public void checkingSuccess() {
-        //sprawdzenia czy strona to /gotowka poczekanie na strone
+        // Sprawdzenie czy strona to /gotowka i oczekiwanie na stronę
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.urlToBe("https://testy-zadanie.zapisani.dev/zakonczono/gotowka"));
         String currentUrl = driver.getCurrentUrl();
         String expectedUrl = "https://testy-zadanie.zapisani.dev/zakonczono/gotowka";
         assertEquals(expectedUrl, currentUrl);
-        //sprawdzenie sukcesu
-        List<WebElement> elementy = driver.findElements(By.cssSelector(".text-center.col"));
 
-        // Sprawdzenie, czy oba teksty zostały znalezione
-        boolean firstText = false;
-        boolean secondText = false;
+        // Sprawdzenie, czy teksty zostały znalezione
+        By firstTextLocator = By.xpath("//div[contains(text(), 'Rejestracja przyjęta')]");
+        By secondTextLocator = By.xpath("//div[contains(text(), 'Rejestracja przyjęta. Dziękujemy!')]");
 
-        for (WebElement element : elementy) {
-            String tekst = element.getText();
-            if (tekst.contains("Rejestracja przyjęta")) {
-                firstText = true;
-                break;
-            }
-        }
+        WebDriverWait textWait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        textWait.until(ExpectedConditions.visibilityOfElementLocated(firstTextLocator));
+        textWait.until(ExpectedConditions.visibilityOfElementLocated(secondTextLocator));
 
-        for (WebElement element : elementy) {
-            String tekst = element.getText();
-            if (tekst.contains("Rejestracja przyjęta. Dziękujemy!")) {
-                secondText = true;
-                break;
-            }
-        }
-        // Sprawdzenie, czy oba teksty zostały znalezione
-        Assertions.assertTrue(firstText, "Nie znaleziono tekstu 'Rejestracja przyjęta'");
-        Assertions.assertTrue(secondText, "Nie znaleziono tekstu 'Rejestracja przyjęta. Dziękujemy!'");
+        // Komunikat w przypadku nie znalezienia tekstów
+        Assertions.assertFalse(driver.findElements(firstTextLocator).isEmpty(), "Nie znaleziono tekstu 'Rejestracja przyjęta'");
+        Assertions.assertFalse(driver.findElements(secondTextLocator).isEmpty(), "Nie znaleziono tekstu 'Rejestracja przyjęta. Dziękujemy!'");
     }
 
     public int extractNumberFromElement() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div[2]/div/div[3]/div/div/div[2]/div/form/div[1]/div/div/div/div/div/div/div/div/article/div/div[3]/div/div[4]/div[2]/div/div/div/div/div/div/div[5]/div")));
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("(//div/div[@class='col'])[3]")
+        ));
         String text = element.getText();
         String numberText = text.replaceAll("[^0-9-]", "");
         return Integer.parseInt(numberText);

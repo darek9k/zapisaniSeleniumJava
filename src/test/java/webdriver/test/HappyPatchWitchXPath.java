@@ -11,7 +11,7 @@ import webdriver.page.FormPage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class HappyPatchWitchXPatch {
+public class HappyPatchWitchXPath {
     private static WebDriver driver;
     private static FormPage formPage;
 
@@ -49,7 +49,7 @@ public class HappyPatchWitchXPatch {
         formPage.acceptCookies();
         formPage.fillFormWithTestData();
 
-        //wyciągnięcie ilości 'Dostępne' z długim XPatch
+        //wyciągnięcie ilości 'Dostępne'
         FormPage availableOnes = new FormPage(driver);
         int initialCount = availableOnes.extractNumberFromElement();
 
@@ -60,7 +60,7 @@ public class HappyPatchWitchXPatch {
         formPage.checkingSuccess();
         formPage.clickEndButton();
 
-        //wyciagniecie ilosci 'Dostępne' z długim XPatch / po wypełnienie formularza plus asercja
+        //wyciagniecie ilosci 'Dostępne' / plus asercja
         int finalCount = availableOnes.extractNumberFromElement();
         assertEquals(1, initialCount - finalCount);
 
